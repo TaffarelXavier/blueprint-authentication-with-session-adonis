@@ -11,18 +11,18 @@ Este é o padrão completo do AdonisJs, vem pré-configurado com:
 7. Lucid ORM
 8. Migrations and seeds
 
-# Configuração
+## Configuração
 Use o comando ``adonis`` para instalar o blueprint
 
 adonis novo critério
 ou clonar manualmente o repositório e depois executar ``npm install``.
 
-# Migrações
+## Migrações
 Execute o seguinte comando para executar migrações de inicialização.
 
 ``adonis migration:run``
 
-# Frontend
+## Frontend
 
 Entrar na pasta __``client``__ e abrir o arquivo __``index.html``__.
 
