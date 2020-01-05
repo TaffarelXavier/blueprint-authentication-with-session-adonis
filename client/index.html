@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container  body-content">
+    <div class="container body-content">
         <div class="row">
             <div class="col-12justify-content-center">
                 <h1 class="justify-content-center display-2">Client</h1>
@@ -84,61 +84,67 @@
         </div>
         <hr>
         <div class="row">
-            <h1 class="col-12" id="mostrar-usuario">
-            </h1>
+            <h3 class="col-12" id="mostrar-usuario">
+            </h3>
         </div>
     </div>
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const formRegister = document.getElementById('formRegister');
         const formLogin = document.getElementById('formLogin');
 
         const baseUrl = 'http://127.0.0.1:3004';
 
+        /**
+         * 
+         * 
+         *         REGISTRO
+         * 
+         * 
+         * */
         formRegister.onsubmit = () => {
 
             var form = new FormData(formRegister);
 
-            fetch(baseUrl + "/register", {
+            axios(baseUrl + "/register", {
                 method: "POST",
-                body: form,
-                mode: 'cors',
-                credentials: 'include'
+                data: form,
+                withCredentials: true
             }).then(response => {
                 if (response.status == 200) {
-                    return response.json();
+                    window.localStorage.setItem('user', JSON.stringify(response));
                 } else {
                     throw new Error('Ops! Houve um erro em nosso servidor.');
                 }
-                return response => response.blob();
-            }).then(response => {
-                window.localStorage.setItem('user', JSON.stringify(response));
             }).catch(error => {
-                console.log(response);
-                log(JSON.stringify(response));
+                console.log(error);
+                log(JSON.stringify(error));
             });
 
             return false;
         }
-
-        formLogin.onsubmit = () => {
+        /**
+         * 
+         * 
+         *          LOGIN
+         * 
+         * 
+         * */
+        formLogin.onsubmit = (ev) => {
+            ev.preventDefault();
 
             var form = new FormData(formLogin);
 
-            fetch(baseUrl + "/login", {
+            axios(baseUrl + "/login", {
                 method: "POST",
-                body: form,
-                mode: 'cors',
-                credentials: 'include'
+                data: form,
+                withCredentials: true
             }).then(response => {
                 if (response.status == 200) {
-                    return response.json();
+                    window.localStorage.setItem('user', JSON.stringify(response.data));
                 } else {
                     throw new Error('Ops! Houve um erro em nosso servidor.');
                 }
-                return response => response.blob();
-            }).then(response => {
-                window.localStorage.setItem('user', JSON.stringify(response));
             }).catch(error => {
                 console.log(error);
                 log(JSON.stringify(error));
@@ -151,14 +157,11 @@
 
             if (window.localStorage.getItem('user')) {
                 const { id } = JSON.parse(window.localStorage.getItem('user'));
-                fetch(baseUrl + "/users/" + id, {
+                axios(baseUrl + "/users/" + id, {
                     method: "GET",
-                    mode: 'cors',
-                    credentials: 'include'
+                    withCredentials: true
                 }).then(response => {
-                    return response.status == 200 ? response.json() : response.statusText;
-                }).then(response => {
-                    log(JSON.stringify(response));
+                    return response.status == 200 ? log(JSON.stringify(response.data)): response.statusText;
                 }).catch(error => {
                     console.log(error);
                     log(JSON.stringify(error));
@@ -171,14 +174,12 @@
 
             if (window.localStorage.getItem('user')) {
                 window.localStorage.removeItem('user');
-                fetch(baseUrl + '/logout', {
+                axios(baseUrl + '/logout', {
                     method: "GET",
-                    mode: 'cors',
-                    credentials: 'include'
+                    withCredentials: true
                 }).then(response => {
-                    return response.status === 200 ? response.json() : response.statusText;
-                }).then(response => {
-                    console.log(response);
+                    return response.status === 200 ? log(JSON.stringify(response.data)) : response.statusText;
+                }).catch(response => {
                     log(JSON.stringify(response));
                 })
             }
@@ -186,7 +187,7 @@
         }
 
         function log(content) {
-            document.getElementById('mostrar-usuario').innerHTML = content;
+            document.getElementById('mostrar-usuario').append(content);
         }
     </script>
 </body>
