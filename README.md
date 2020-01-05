@@ -7,9 +7,8 @@ Este é o padrão completo do AdonisJs, vem pré-configurado com:
 3. Autenticação
 4. Middleware de segurança da Web
 5. CORS
-6. Mecanismo de modelo de borda
-7. Lucid ORM
-8. Migrations and seeds
+6. Lucid ORM
+7. Migrations and seeds
 
 ## Configuração
 Use o comando ``adonis`` para instalar o blueprint
