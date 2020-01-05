@@ -13,7 +13,8 @@ Este é o padrão completo do AdonisJs, vem pré-configurado com:
 ## Configuração
 Use o comando ``adonis`` para instalar o blueprint
 
-adonis novo critério
+``adonis new NOME_DO_SEU_PROJETO_AQUI --blueprint https://github.com/TaffarelXavier/blueprint-autenticacao-com-sessao-adonis.git``
+
 ou clonar manualmente o repositório e depois executar ``npm install``.
 
 ## Migrações

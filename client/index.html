@@ -5,46 +5,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+        integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <title>Document</title>
 </head>
 
 <body>
-    <h1>Registrar</h1>
-    <form id="formRegister">
-        <Label>Nome:</Label>
-        <input name="username" />
-        <Label>Email:</Label>
-        <input name="email" />
-        <Label>Password:</Label>
-        <input name="password" />
-        <button>Registrar</button>
-    </form>
+    <div class="container  body-content">
+        <div class="row">
+            <div class="col-12 justify-content-center">
+                <h1 class="justify-content-center">Client</h1>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm">
+                <form id="formRegister">
+                    <div class="">
+                        <h1>Registrar</h1>
+                    </div>
+                    <div class=" justify-content-start" style="padding-top:10px;">
+                        <label>NOME:</label>
+                    </div>
+                    <div class=" justify-content-center" style="padding-top:10px;">
+                        <input class="form-control" name="username" required></input>
+                    </div>
+                    <div class=" justify-content-start" style="padding-top:10px;">
+                        <label>EMAIL:</label>
+                    </div>
+                    <div class=" justify-content-center" style="padding-top:10px;">
+                        <input class="form-control" name="email" required></input>
+                    </div>
+                    <div class=" justify-content-start" style="padding-top:10px;">
+                        <label>SENHA:</label>
+                    </div>
+                    <div class=" justify-content-center" style="padding-top:10px;">
+                        <input class="form-control" type="password" name="password" required></input>
+                    </div>
+                    <div class=" justify-content-end" style="padding-top:10px;">
+                        <button class="btn btn-primary">REGISTRAR</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm">
+                <div class="">
+                    <h1>Login</h1>
+                </div>
+                <form id="formLogin">
+                    <div class="justify-content-start" style="padding-top:10px;">
+                        <label>EMAIL:</label>
+                    </div>
+                    <div class=" justify-content-center" style="padding-top:10px;">
+                        <input class="form-control" name="email" required></input>
+                    </div>
+                    <div class=" justify-content-start" style="padding-top:10px;">
+                        <label>SENHA:</label>
+                    </div>
+                    <div class=" justify-content-center" style="padding-top:10px;">
+                        <input class="form-control" type="password" name="password" required></input>
+                    </div>
+                    <div class=" justify-content-end" style="padding-top:10px;">
+                        <button class="btn btn-primary">ENTRAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <button id="btnMostrarUsuarioAuth" class="btn btn-primary">
+                    Mostrar Usuário Autenticado
+                </button>
 
-    <h1>Login</h1>
-    <form id="formLogin">
-        <Label>Email:</Label>
-        <input name="email" />
-        <Label>Password:</Label>
-        <input name="password" />
-        <button>Registrar</button>
-    </form>
-    <br>
-    <div>
-        <button id="btnMostrarUsuarioAuth">
-            Mostrar Usuário Autenticado
-        </button>
-
-        <button id="btnLogout">
-            Logout
-        </button>
-        
+                <button id="btnLogout" class="btn btn-primary">
+                    Logout
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" id="mostrar-usuario">
+            </div>
+        </div>
     </div>
 
     <script>
         const formRegister = document.getElementById('formRegister');
         const formLogin = document.getElementById('formLogin');
-        const baseUrl = 'http://127.0.0.1:3004';
 
+        const baseUrl = 'http://127.0.0.1:3004';
 
         formRegister.onsubmit = () => {
 
@@ -63,19 +111,14 @@
                 }
                 return response => response.blob();
             }).then(response => {
-                alert(JSON.stringify(response))
-                console.debug(response);
-                // ...
+                window.localStorage.setItem('user', JSON.stringify(response));
             }).catch(error => {
                 console.error(error);
             });
 
             return false;
         }
-
-
         formLogin.onsubmit = () => {
-
             var form = new FormData(formLogin);
 
             fetch(baseUrl + "/login", {
@@ -91,9 +134,7 @@
                 }
                 return response => response.blob();
             }).then(response => {
-                alert(JSON.stringify(response))
-                console.debug(response);
-                // ...
+                window.localStorage.setItem('user', JSON.stringify(response));
             }).catch(error => {
                 console.error(error);
             });
@@ -102,20 +143,30 @@
         }
 
         document.getElementById('btnMostrarUsuarioAuth').onclick = () => {
-            var id = 2;
+            const { id } = JSON.parse(window.localStorage.getItem('user'));
             fetch(baseUrl + "/users/" + id, {
                 method: "GET",
                 mode: 'cors',
                 credentials: 'include'
             }).then(response => {
-                if(response.status == 200){
-                    return response.json();
-                }
+                return response.status == 200 ? response.json() : response.statusText;
             }).then(response => {
-                console.log(response);
+                document.getElementById('mostrar-usuario').innerHTML = JSON.stringify(response);
             }).catch(error => {
                 console.error(error);
             });
+        }
+
+        document.getElementById('btnLogout').onclick = () => {
+            fetch(baseUrl + '/logout', {
+                method: "GET",
+                mode: 'cors',
+                credentials: 'include'
+            }).then(response => {
+                return response.status === 200 ? response.json() : response.statusText;
+            }).then(response => {
+                console.log(response);
+            })
         }
     </script>
 </body>
