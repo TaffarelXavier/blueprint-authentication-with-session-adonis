@@ -24,7 +24,7 @@ Execute o seguinte comando para executar migrações de inicialização.
 
 # Frontend
 
-Entrar na pasta client e abrir o arquivo ``index.html``.
+Entrar na pasta __``client``__ e abrir o arquivo __``index.html``__.
 
 Não precisa fazer nada nesse arquivo, somente executar as funções como:
 
