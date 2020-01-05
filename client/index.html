@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Registrar</h1>
+    <form id="formRegister">
+        <Label>Nome:</Label>
+        <input name="username" />
+        <Label>Email:</Label>
+        <input name="email" />
+        <Label>Password:</Label>
+        <input name="password" />
+        <button>Registrar</button>
+    </form>
+
+    <h1>Login</h1>
+    <form id="formLogin">
+        <Label>Email:</Label>
+        <input name="email" />
+        <Label>Password:</Label>
+        <input name="password" />
+        <button>Registrar</button>
+    </form>
+    <br>
+    <div>
+        <button id="btnMostrarUsuarioAuth">
+            Mostrar Usuário Autenticado
+        </button>
+
+        <button id="btnLogout">
+            Logout
+        </button>
+        
+    </div>
+
+    <script>
+        const formRegister = document.getElementById('formRegister');
+        const formLogin = document.getElementById('formLogin');
+        const baseUrl = 'http://127.0.0.1:3004';
+
+
+        formRegister.onsubmit = () => {
+
+            var form = new FormData(formRegister);
+
+            fetch(baseUrl + "/register", {
+                method: "POST",
+                body: form,
+                mode: 'cors',
+                credentials: 'include'
+            }).then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Ops! Houve um erro em nosso servidor.');
+                }
+                return response => response.blob();
+            }).then(response => {
+                alert(JSON.stringify(response))
+                console.debug(response);
+                // ...
+            }).catch(error => {
+                console.error(error);
+            });
+
+            return false;
+        }
+
+
+        formLogin.onsubmit = () => {
+
+            var form = new FormData(formLogin);
+
+            fetch(baseUrl + "/login", {
+                method: "POST",
+                body: form,
+                mode: 'cors',
+                credentials: 'include'
+            }).then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Ops! Houve um erro em nosso servidor.');
+                }
+                return response => response.blob();
+            }).then(response => {
+                alert(JSON.stringify(response))
+                console.debug(response);
+                // ...
+            }).catch(error => {
+                console.error(error);
+            });
+
+            return false;
+        }
+
+        document.getElementById('btnMostrarUsuarioAuth').onclick = () => {
+            var id = 2;
+            fetch(baseUrl + "/users/" + id, {
+                method: "GET",
+                mode: 'cors',
+                credentials: 'include'
+            }).then(response => {
+                if(response.status == 200){
+                    return response.json();
+                }
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+
+</html>
