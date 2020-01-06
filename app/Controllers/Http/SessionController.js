@@ -42,7 +42,7 @@ class SessionController {
       if (isLogeddin) {
         await auth.logout();
       }
-      return response.status(401).send({ alert: "DESCONECTADO" });
+      return { alert: "DESCONECTADO" };
     } catch (error) {
       response.status(401).send({ alert: "NOT_LOGGEDED" });
     }
