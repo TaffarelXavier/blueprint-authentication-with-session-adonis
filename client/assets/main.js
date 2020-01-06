@@ -39,7 +39,7 @@ const Formulario = {
         .post("/register", form)
         .then(response => {
           if (response.status == 200) {
-            window.localStorage.setItem("user", JSON.stringify(response));
+            window.localStorage.setItem("user", JSON.stringify(response.data));
           } else {
             throw new Error("Ops! Houve um erro em nosso servidor.");
           }

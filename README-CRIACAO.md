@@ -45,7 +45,7 @@ __Criação dos métodos__<br>
 ``` javascript
 async register({ auth, request, response }) {
     let user = await User.create(request.all());
-
+    await auth.login(user);
     return response.json(user);
   }
 ```
@@ -106,7 +106,7 @@ __5.4 Logout__
 ``` javascript
 
 // Essas rotas devem ser acessíveis apenas //
-quando você não está logado
+// quando você não está logado
 Route.group(() => {
   //Faz o login
   Route.post("/login", "SessionController.login")

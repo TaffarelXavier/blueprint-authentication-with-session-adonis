@@ -3,9 +3,10 @@
 const User = use("App/Models/User");
 
 class SessionController {
+  
   async register({ auth, request, response }) {
     let user = await User.create(request.all());
-
+    await auth.login(user);
     return response.json(user);
   }
 
