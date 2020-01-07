@@ -129,6 +129,11 @@ Route.get("/logout", "SessionController.logout");
 
 ## Instalando o MiddleWare Session
 
+Para evitar este erro, na requisição:
+```
+type: "another"
+message: "Cannot read property 'put' of undefined"
+```
 ``adonis install @adonisjs/session``
 
 ```
