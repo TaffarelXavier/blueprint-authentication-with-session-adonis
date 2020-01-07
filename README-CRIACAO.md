@@ -134,17 +134,20 @@ Para evitar este erro, na requisição:
 type: "another"
 message: "Cannot read property 'put' of undefined"
 ```
-``adonis install @adonisjs/session``
-
+``adonis install @adonisjs/session``<br><br>
+Em _`start/app.js`:_
 ```
 const providers = [
   '@adonisjs/session/providers/SessionProvider'
 ]
-
+```
+Em _`start/kernel.js `:_
+```
 const globalMiddleware = [
   'Adonis/Middleware/Session'
 ]
 ```
+
 
 
 ## 7º Passo:
